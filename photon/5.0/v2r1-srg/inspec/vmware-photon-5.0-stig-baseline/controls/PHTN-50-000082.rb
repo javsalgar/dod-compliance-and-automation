@@ -42,6 +42,10 @@ control 'PHTN-50-000082' do
   tag cci: ['CCI-001493', 'CCI-001494', 'CCI-001495']
   tag nist: ['AU-9', 'AU-9 a']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe file('/usr/sbin/auditctl') do
     its('owner') { should cmp 'root' }
     its('group') { should cmp 'root' }

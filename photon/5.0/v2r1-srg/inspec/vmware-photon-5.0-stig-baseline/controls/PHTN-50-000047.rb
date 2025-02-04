@@ -76,6 +76,10 @@ control 'PHTN-50-000047' do
   tag cci: ['CCI-000381', 'CCI-000778']
   tag nist: ['CM-7 a', 'IA-3']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   disabled_modules = input('disabled_modules')
   disabled_modules.each do |mod|
     describe kernel_module(mod) do

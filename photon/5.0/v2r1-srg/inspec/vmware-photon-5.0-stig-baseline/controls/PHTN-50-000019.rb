@@ -46,6 +46,10 @@ control 'PHTN-50-000019' do
   tag cci: ['CCI-000135', 'CCI-002233']
   tag nist: ['AC-6 (8)', 'AU-3 (1)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe auditd do
     its('lines') { should include /-a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -F key=execpriv/ }
     its('lines') { should include /-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -F key=execpriv/ }

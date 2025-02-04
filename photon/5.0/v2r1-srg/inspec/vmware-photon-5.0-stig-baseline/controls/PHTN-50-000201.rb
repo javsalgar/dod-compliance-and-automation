@@ -39,6 +39,10 @@ control 'PHTN-50-000201' do
   tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   sshdcommand = input('sshdcommand')
   describe command("#{sshdcommand}|&grep -i LogLevel") do
     its('stdout.strip') { should cmp 'LogLevel INFO' }

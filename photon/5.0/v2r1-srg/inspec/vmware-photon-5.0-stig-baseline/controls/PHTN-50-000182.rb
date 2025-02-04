@@ -40,6 +40,10 @@ control 'PHTN-50-000182' do
   tag cci: ['CCI-002450']
   tag nist: ['SC-13 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe file('/proc/sys/crypto/fips_enabled') do
     its('content') { should cmp 1 }
   end

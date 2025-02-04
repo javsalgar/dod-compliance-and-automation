@@ -32,6 +32,10 @@ control 'PHTN-50-000127' do
   tag cci: ['CCI-001744', 'CCI-002699']
   tag nist: ['CM-3 (5)', 'SI-6 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe command('rpm -qa | grep aide') do
     its('stdout.strip') { should match /^aide-/ }
   end

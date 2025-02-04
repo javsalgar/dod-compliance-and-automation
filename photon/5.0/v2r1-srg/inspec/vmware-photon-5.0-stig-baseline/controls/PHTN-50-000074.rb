@@ -37,6 +37,10 @@ control 'PHTN-50-000074' do
   tag cci: ['CCI-001314']
   tag nist: ['SI-11 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe file('/etc/rsyslog.conf') do
     its('content') { should match /^\$umask\s0037$/ }
   end

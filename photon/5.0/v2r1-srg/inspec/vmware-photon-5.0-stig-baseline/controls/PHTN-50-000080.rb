@@ -39,6 +39,10 @@ control 'PHTN-50-000080' do
   tag cci: ['CCI-001464']
   tag nist: ['AU-14 (1)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe command('cat /proc/cmdline') do
     its('stdout.strip') { should match /audit=1/ }
   end

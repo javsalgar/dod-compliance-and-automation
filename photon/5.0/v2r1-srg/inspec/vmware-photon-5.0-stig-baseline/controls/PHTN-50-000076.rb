@@ -45,6 +45,10 @@ control 'PHTN-50-000076' do
   tag cci: ['CCI-001403']
   tag nist: ['AC-2 (4)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe auditd.file('/usr/sbin/usermod') do
     its('permissions') { should include ['x'] }
     its('key') { should cmp 'usermod' }

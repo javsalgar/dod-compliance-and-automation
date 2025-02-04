@@ -37,6 +37,10 @@ control 'PHTN-50-000197' do
   tag cci: ['CCI-004066']
   tag nist: ['IA-5 (1) (h)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe file('/etc/pam.d/system-password') do
     its('content') { should match /^password\s+(required|requisite)\s+pam_pwquality\.so\s+.*$/ }
   end

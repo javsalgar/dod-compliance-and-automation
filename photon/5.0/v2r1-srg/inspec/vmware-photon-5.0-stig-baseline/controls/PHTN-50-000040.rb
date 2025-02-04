@@ -23,7 +23,7 @@ control 'PHTN-50-000040' do
   tag cci: ['CCI-000197']
   tag nist: ['IA-5 (1) (c)']
 
-  describe command('rpm -qa | grep telnet') do
+  describe command('yum list | grep "^telnet"') do
     its('stdout') { should cmp '' }
     its('stderr') { should cmp '' }
   end

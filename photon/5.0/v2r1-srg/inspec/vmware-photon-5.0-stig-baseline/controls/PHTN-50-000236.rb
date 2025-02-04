@@ -33,6 +33,10 @@ control 'PHTN-50-000236' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe command("resolvectl status | grep 'Fallback DNS'") do
     its('stdout') { should cmp '' }
     its('stderr') { should cmp '' }

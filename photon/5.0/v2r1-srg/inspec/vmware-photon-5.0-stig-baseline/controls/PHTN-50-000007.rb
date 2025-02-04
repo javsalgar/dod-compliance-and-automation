@@ -37,6 +37,10 @@ control 'PHTN-50-000007' do
   tag cci: ['CCI-000054']
   tag nist: ['AC-10']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe limits_conf('/etc/security/limits.conf') do
     its('*') { should include ['hard', 'maxlogins', '10'] }
   end

@@ -20,6 +20,10 @@ inputs:
   type: boolean
   description: Used to indicate if system is a container host and running Kubernetes/Docker/etc for controls where this would make them N/A
   value: false
+- name: isContainer
+  type: boolean
+  description: Used to indicate if system is a container for controls where this would make them N/A
+  value: false
 - name: sshdcommand
   type: string
   value: 'sshd -T'

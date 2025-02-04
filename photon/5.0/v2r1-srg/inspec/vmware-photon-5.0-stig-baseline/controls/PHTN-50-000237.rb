@@ -48,6 +48,10 @@ control 'PHTN-50-000237' do
   tag cci: ['CCI-001744']
   tag nist: ['CM-3 (5)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   aidecontent = inspec.profile.file('aide.conf')
   describe file('/etc/aide.conf') do
     its('content') { should eq aidecontent }

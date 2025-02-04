@@ -37,6 +37,10 @@ control 'PHTN-50-000092' do
   tag cci: ['CCI-001496']
   tag nist: ['AU-9 (3)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe command('rpm -V audit | grep "^..5" | grep -v /etc/audit/auditd.conf') do
     its('stdout.strip') { should cmp '' }
     its('stderr') { should cmp '' }

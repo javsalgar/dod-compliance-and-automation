@@ -48,6 +48,10 @@ control 'PHTN-50-000107' do
   tag cci: ['CCI-000172', 'CCI-001404', 'CCI-002234', 'CCI-004188']
   tag nist: ['AC-2 (4)', 'AC-6 (9)', 'AU-12 c', 'MA-3 (5)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   results = command('find / -xdev -path /var/lib/containerd -prune -o -path /var/lib/docker -prune -o \( -perm -4000 -type f -o -perm -2000 \) -type f -print').stdout.split("\n")
   if !results.empty?
     results.each do |path|

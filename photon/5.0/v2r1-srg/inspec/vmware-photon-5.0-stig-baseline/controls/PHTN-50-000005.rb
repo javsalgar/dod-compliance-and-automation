@@ -86,6 +86,10 @@ control 'PHTN-50-000005' do
   tag cci: ['CCI-000048', 'CCI-001384', 'CCI-001385', 'CCI-001386', 'CCI-001387', 'CCI-001388']
   tag nist: ['AC-8 a', 'AC-8 c 1', 'AC-8 c 2', 'AC-8 c 3']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   sshdcommand = input('sshdcommand')
   describe command("#{sshdcommand}|&grep -i Banner") do
     its('stdout.strip') { should cmp 'Banner /etc/issue' }

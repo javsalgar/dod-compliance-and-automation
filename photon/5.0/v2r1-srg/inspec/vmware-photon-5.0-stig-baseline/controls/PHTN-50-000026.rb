@@ -47,6 +47,10 @@ control 'PHTN-50-000026' do
   tag cci: ['CCI-000162', 'CCI-000163', 'CCI-000164']
   tag nist: ['AU-9 a']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe file(auditd_conf('/etc/audit/auditd.conf').log_file) do
     its('mode') { should cmp '0600' }
     its('owner') { should cmp 'root' }

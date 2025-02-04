@@ -70,6 +70,10 @@ control 'PHTN-50-000046' do
   tag cci: ['CCI-000213']
   tag nist: ['AC-3']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe file('/boot/grub2/grub.cfg') do
     its('content') { should match /^set\ssuperusers=.*$/ }
     its('content') { should match /^password_pbkdf2\sroot\sgrub.pbkdf2.sha512/ }

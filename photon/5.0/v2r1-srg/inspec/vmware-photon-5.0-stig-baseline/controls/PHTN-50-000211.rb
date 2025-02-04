@@ -35,6 +35,10 @@ control 'PHTN-50-000211' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   sshdcommand = input('sshdcommand')
   describe command("#{sshdcommand}|&grep -i GSSAPIAuthentication") do
     its('stdout.strip') { should cmp 'GSSAPIAuthentication no' }

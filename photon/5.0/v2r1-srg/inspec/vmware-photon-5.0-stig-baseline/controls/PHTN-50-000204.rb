@@ -50,6 +50,10 @@ control 'PHTN-50-000204' do
   tag cci: ['CCI-000172', 'CCI-001403', 'CCI-002130']
   tag nist: ['AC-2 (4)', 'AU-12 c']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe auditd.file('/etc/passwd') do
     its('permissions') { should include ['w', 'a'] }
     its('key') { should cmp 'passwd' }

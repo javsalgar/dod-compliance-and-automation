@@ -39,6 +39,10 @@ control 'PHTN-50-000012' do
   tag cci: ['CCI-000067']
   tag nist: ['AC-17 (1)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe command('grep -E "(^auth.*|^authpriv.*|^daemon.*)" /etc/rsyslog.conf') do
     its('stdout.strip') { should match /auth\.\*;authpriv\.\*;daemon\.\*[\s]*#{input('authprivlog')}/ }
   end

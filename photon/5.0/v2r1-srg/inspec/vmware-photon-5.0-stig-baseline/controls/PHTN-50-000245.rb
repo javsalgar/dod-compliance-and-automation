@@ -39,6 +39,10 @@ control 'PHTN-50-000245' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   tmpoptions = ['nosuid', 'noexec', 'nodev']
   describe parse_config_file('/lib/systemd/system/tmp.mount').params['Mount'].Options.split(',') do
     it { should include(*tmpoptions) }

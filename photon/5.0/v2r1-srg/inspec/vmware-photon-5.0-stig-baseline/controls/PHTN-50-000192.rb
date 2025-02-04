@@ -58,6 +58,10 @@ control 'PHTN-50-000192' do
   tag cci: ['CCI-000044']
   tag nist: ['AC-7 a']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe file('/etc/pam.d/system-auth') do
     its('content') { should match /^auth\s+(required|requisite)\s+pam_faillock\.so\s+(?=.*\bpreauth\b).*\n(^auth\s+(required|requisite)\s+pam_unix\.so.*)/ }
     its('content') { should match /^auth\s+(required|requisite)\s+pam_unix\.so.*\n(^auth\s+(required|requisite|\[default=die\])\s+pam_faillock\.so\s+(?=.*\bauthfail\b).*)/ }

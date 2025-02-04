@@ -40,6 +40,10 @@ control 'PHTN-50-000069' do
   tag cci: ['CCI-001133', 'CCI-002891']
   tag nist: ['MA-4 (7)', 'SC-10']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   sshdcommand = input('sshdcommand')
   describe command("#{sshdcommand}|&grep -i ClientAliveInterval") do
     its('stdout.strip') { should cmp 'ClientAliveInterval 900' }

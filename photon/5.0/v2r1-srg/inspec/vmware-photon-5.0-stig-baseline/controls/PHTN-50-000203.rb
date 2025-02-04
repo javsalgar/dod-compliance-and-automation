@@ -39,6 +39,10 @@ control 'PHTN-50-000203' do
   tag cci: ['CCI-001133']
   tag nist: ['SC-10']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   sshdcommand = input('sshdcommand')
   describe command("#{sshdcommand}|&grep -i ClientAliveCountMax") do
     its('stdout.strip') { should cmp 'ClientAliveCountMax 0' }
