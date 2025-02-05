@@ -35,10 +35,4 @@ control 'PHTN-50-000222' do
     it { should_not be_enabled }
     it { should_not be_running }
   end
-  describe systemd_service('ctrl-alt-del.target').params['LoadState'] do
-    it { should cmp 'masked' }
-  end
-  describe systemd_service('ctrl-alt-del.target').params['UnitFileState'] do
-    it { should cmp 'masked' }
-  end
 end

@@ -32,8 +32,8 @@ control 'PHTN-50-000013' do
   tag cci: ['CCI-000068', 'CCI-002418', 'CCI-002420', 'CCI-002422', 'CCI-002890', 'CCI-003123']
   tag nist: ['AC-17 (2)', 'MA-4 (6)', 'SC-8', 'SC-8 (2)']
 
-  describe command('rpm -qa | grep openssl-fips') do
-    its('stdout.strip') { should match /openssl-fips-provider/ }
+  describe file('/usr/lib/ossl-modules/fips.so') do
+    it { should exist }
   end
   # Test whether OpenSSL is operating in FIPS mode system wide
   describe command('openssl md5 /etc/ssh/sshd_config') do

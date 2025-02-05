@@ -27,6 +27,10 @@ control 'PHTN-50-000041' do
   tag cci: ['CCI-004066']
   tag nist: ['IA-5 (1) (h)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe login_defs do
     its('PASS_MIN_DAYS') { should cmp '1' }
   end

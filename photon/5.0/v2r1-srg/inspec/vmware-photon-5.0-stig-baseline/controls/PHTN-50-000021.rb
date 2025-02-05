@@ -44,6 +44,10 @@ control 'PHTN-50-000021' do
   tag cci: ['CCI-000139', 'CCI-001858']
   tag nist: ['AU-5 (2)', 'AU-5 a']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe auditd_conf do
     its('disk_full_action') { should cmp 'SYSLOG' }
     its('disk_error_action') { should cmp 'SYSLOG' }

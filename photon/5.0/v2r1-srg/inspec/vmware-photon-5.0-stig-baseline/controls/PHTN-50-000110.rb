@@ -38,6 +38,10 @@ control 'PHTN-50-000110' do
   tag cci: ['CCI-001849']
   tag nist: ['AU-4']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe auditd_conf do
     its('num_logs') { should cmp >= '5' }
     its('max_log_file_action') { should cmp 'ROTATE' }

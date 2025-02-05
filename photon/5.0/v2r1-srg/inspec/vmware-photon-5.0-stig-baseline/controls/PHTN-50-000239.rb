@@ -43,6 +43,10 @@ control 'PHTN-50-000239' do
   tag cci: ['CCI-001453']
   tag nist: ['AC-17 (2)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   sshdMacs = input('sshdMacs')
   sshdcommand = input('sshdcommand')
   macs = command("#{sshdcommand}|&grep -i MACs").stdout.strip.delete_prefix('macs ').split(',')

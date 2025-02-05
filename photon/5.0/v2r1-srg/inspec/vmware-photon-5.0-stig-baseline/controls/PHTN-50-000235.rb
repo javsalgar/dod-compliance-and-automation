@@ -33,6 +33,10 @@ control 'PHTN-50-000235' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   if input('usePwqualityConf')
     describe parse_config_file('/etc/security/pwquality.conf') do
       its('enforce_for_root') { should_not be nil }

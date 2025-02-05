@@ -41,6 +41,10 @@ control 'PHTN-50-000014' do
   tag cci: ['CCI-000130']
   tag nist: ['AU-3 a']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe.one do
     describe auditd_conf do
       its('write_logs') { should eq nil }

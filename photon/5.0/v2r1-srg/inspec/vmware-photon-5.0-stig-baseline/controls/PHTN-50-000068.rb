@@ -38,6 +38,10 @@ control 'PHTN-50-000068' do
   tag cci: ['CCI-001095', 'CCI-002385']
   tag nist: ['SC-5 (2)', 'SC-5 a']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe kernel_parameter('net.ipv4.tcp_syncookies') do
     its('value') { should cmp 1 }
   end

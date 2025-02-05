@@ -24,6 +24,10 @@ control 'PHTN-50-000210' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe systemd_service('debug-shell.service') do
     it { should_not be_enabled }
     it { should_not be_running }

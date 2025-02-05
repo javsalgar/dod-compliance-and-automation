@@ -38,6 +38,10 @@ control 'PHTN-50-000186' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe auditd_conf do
     its('flush') { should cmp 'INCREMENTAL_ASYNC' }
     its('freq') { should cmp '50' }

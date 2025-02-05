@@ -39,6 +39,10 @@ control 'PHTN-50-000246' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe kernel_parameter('fs.suid_dumpable') do
     its('value') { should eq(0).or eq(2) }
   end

@@ -37,6 +37,10 @@ control 'PHTN-50-000232' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe kernel_parameter('net.ipv4.tcp_timestamps') do
     its('value') { should cmp 1 }
   end

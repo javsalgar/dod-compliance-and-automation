@@ -47,6 +47,10 @@ control 'PHTN-50-000079' do
   sshdcommand = input('sshdcommand')
   ciphers = command("#{sshdcommand}|&grep -i Ciphers").stdout.strip.delete_prefix('ciphers ').split(',')
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   if !ciphers.empty?
     ciphers.each do |cipher|
       describe cipher do

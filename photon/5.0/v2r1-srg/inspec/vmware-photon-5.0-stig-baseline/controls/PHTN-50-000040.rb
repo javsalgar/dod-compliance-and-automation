@@ -23,8 +23,6 @@ control 'PHTN-50-000040' do
   tag cci: ['CCI-000197']
   tag nist: ['IA-5 (1) (c)']
 
-  describe command('yum list | grep "^telnet"') do
-    its('stdout') { should cmp '' }
-    its('stderr') { should cmp '' }
-  end
+  describe file('/usr/bin/telnet') do
+    it { should_not exist }  end
 end

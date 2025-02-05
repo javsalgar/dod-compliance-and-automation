@@ -28,6 +28,10 @@ control 'PHTN-50-000030' do
   tag cci: ['CCI-000171']
   tag nist: ['AU-12 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   auditfiles = command('find /etc/audit/ -type f').stdout
   if !auditfiles.empty?
     auditfiles.split.each do |fname|

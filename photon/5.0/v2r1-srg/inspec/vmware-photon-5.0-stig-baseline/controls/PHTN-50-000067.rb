@@ -37,6 +37,10 @@ control 'PHTN-50-000067' do
   tag cci: ['CCI-001090']
   tag nist: ['SC-4']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe kernel_parameter('kernel.dmesg_restrict') do
     its('value') { should cmp 1 }
   end

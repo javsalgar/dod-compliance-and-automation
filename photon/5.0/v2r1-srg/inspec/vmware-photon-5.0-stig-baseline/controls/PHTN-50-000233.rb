@@ -32,6 +32,10 @@ control 'PHTN-50-000233' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   results = command('find /etc/ssh/ -maxdepth 1 -name "*key.pub"').stdout
 
   if !results.empty?

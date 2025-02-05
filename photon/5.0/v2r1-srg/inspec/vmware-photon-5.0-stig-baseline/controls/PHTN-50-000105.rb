@@ -37,6 +37,10 @@ control 'PHTN-50-000105' do
   tag cci: ['CCI-002235']
   tag nist: ['AC-6 (10)']
 
+  only_if('Target is a container. This control is not applicable', impact: 0.0) {
+    !input('isContainer')
+  }
+
   describe kernel_parameter('fs.protected_symlinks') do
     its('value') { should cmp 1 }
   end
