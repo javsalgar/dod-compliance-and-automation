@@ -1,5 +1,5 @@
 useFaillockConf: true
 usePwqualityConf: true
 sshdcommand: 'sshd -T'
-authprivlog: /var/log/messages
-containerHost: true
+isContainer: true
+isMinimalContainer: true

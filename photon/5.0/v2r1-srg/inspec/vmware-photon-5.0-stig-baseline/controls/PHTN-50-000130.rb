@@ -31,6 +31,10 @@ control 'PHTN-50-000130' do
   tag cci: ['CCI-003992']
   tag nist: ['CM-14']
 
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
   # This config file has a [main] section header at the top
   describe.one do
     describe parse_config_file('/etc/tdnf/tdnf.conf').params['main'] do

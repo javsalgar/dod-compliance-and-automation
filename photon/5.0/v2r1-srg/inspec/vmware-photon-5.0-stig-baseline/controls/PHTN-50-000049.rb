@@ -25,8 +25,24 @@ control 'PHTN-50-000049' do
   tag cci: ['CCI-000764']
   tag nist: ['IA-2']
 
-  describe command('awk -F ":" \'list[$3]++{print $1, $3}\' /etc/passwd') do
-    its('stdout') { should cmp '' }
-    its('stderr') { should cmp '' }
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
+  if input('isMinimalContainer')
+    describe file('/etc/passwd') do
+      it 'should not contain duplicate user IDs' do
+        file_content = subject.content
+        user_ids = file_content.split("\n").map { |line| line.split(':')[2] }
+        duplicate_user_ids = user_ids.select { |id| user_ids.count(id) > 1 }.uniq
+
+        expect(duplicate_user_ids).to be_empty
+      end
+    end
+    else
+    describe command('awk -F ":" \'list[$3]++{print $1, $3}\' /etc/passwd') do
+      its('stdout') { should cmp '' }
+      its('stderr') { should cmp '' }
+    end
   end
 end

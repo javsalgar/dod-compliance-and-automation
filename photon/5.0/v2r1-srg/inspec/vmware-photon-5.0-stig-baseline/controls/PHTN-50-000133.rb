@@ -1,3 +1,5 @@
+require 'etc'
+
 control 'PHTN-50-000133' do
   title 'The Photon operating system must require users to reauthenticate for privilege escalation.'
   desc  "
@@ -36,8 +38,36 @@ control 'PHTN-50-000133' do
   tag cci: ['CCI-004895']
   tag nist: ['SC-11 b']
 
+
+  results = []
+  if input('isMinimalContainer')
+    def extract_nopasswd_users(files)
+      users_with_nopasswd = []
+
+      files.each do |file|
+        next unless File.exist?(file)
+
+        File.readlines(file).each do |line|
+          line.strip!
+          next if line.start_with?('#') || line.empty?
+
+          if line.include?('NOPASSWD')
+            user = line.split.first
+            users_with_nopasswd << user unless users_with_nopasswd.include?(user)
+          end
+        end
+      end
+
+      users_with_nopasswd
+    end
+
+    # Files to search in
+    sudoers_files = ['/etc/sudoers'] + Dir.glob('/etc/sudoers.d/*')
+    results = extract_nopasswd_users(sudoers_files)
+  else
+    results = command("awk '/NOPASSWD/ && /^[^#%].*/ {print $1}' /etc/sudoers /etc/sudoers.d/*").stdout.split("\n")
+  end
   # Find users in sudoers with NOPASSWD flag and extract username
-  results = command("awk '/NOPASSWD/ && /^[^#%].*/ {print $1}' /etc/sudoers /etc/sudoers.d/*").stdout.split("\n")
 
   # Compare results to shadow file to verify their password is set to !
   if !results.empty?

@@ -1,3 +1,4 @@
+require 'open3'
 control 'PHTN-50-000013' do
   title 'The Photon operating system must have the OpenSSL FIPS provider installed to protect the confidentiality of remote access sessions.'
   desc  "

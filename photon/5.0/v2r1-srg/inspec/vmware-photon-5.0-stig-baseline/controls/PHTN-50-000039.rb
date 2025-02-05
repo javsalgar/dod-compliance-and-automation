@@ -31,6 +31,10 @@ control 'PHTN-50-000039' do
   tag cci: ['CCI-004062']
   tag nist: ['IA-5 (1) (d)']
 
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
   describe login_defs do
     its('ENCRYPT_METHOD') { should cmp 'SHA512' }
   end

@@ -1,3 +1,4 @@
+require 'find'
 control 'PHTN-50-000085' do
   title 'The Photon operating system must limit privileges to change software resident within software libraries.'
   desc  "
@@ -28,11 +29,27 @@ control 'PHTN-50-000085' do
   tag cci: ['CCI-001499']
   tag nist: ['CM-5 (6)']
 
-  badfiles = command('find /usr/lib/ -type f -perm -o+w').stdout
-  badfilesstderr = command('find /usr/lib/ -type f -perm -o+w').stderr
+  # Directory to search
+  directory = '/usr/lib'
+
+  # Array to store files with -o+w permissions
+  badfiles = []
+  badfilesstderr = ''
+
+  if input('isMinimalContainer')
+    # Search for files with -o+w permissions
+    Find.find(directory) do |path|
+      if File.file?(path) && File.stat(path).mode & 0o002 != 0
+        badfiles << path
+      end
+    end
+  else
+    badfiles = command('find /usr/lib/ -type f -perm -o+w').stdout.split
+    badfilesstderr = command('find /usr/lib/ -type f -perm -o+w').stderr
+  end
 
   if !badfiles.empty?
-    badfiles.split.each do |badfile|
+    badfiles.each do |badfile|
       describe file(badfile) do
         it { should_not be_writable.by('others') }
       end

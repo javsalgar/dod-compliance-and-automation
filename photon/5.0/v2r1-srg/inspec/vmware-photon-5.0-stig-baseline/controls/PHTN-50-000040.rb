@@ -23,6 +23,10 @@ control 'PHTN-50-000040' do
   tag cci: ['CCI-000197']
   tag nist: ['IA-5 (1) (c)']
 
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
   describe file('/usr/bin/telnet') do
     it { should_not exist }  end
 end

@@ -23,6 +23,10 @@ inputs:
 - name: isContainer
   type: boolean
   description: Used to indicate if system is a container for controls where this would make them N/A
+  value: true
+- name: isMinimalContainer
+  type: boolean
+  description: Used to indicate if system is a minimal container for controls where this would make them N/A
   value: false
 - name: sshdcommand
   type: string

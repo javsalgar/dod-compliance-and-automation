@@ -31,6 +31,10 @@ control 'PHTN-50-000185' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
   describe login_defs do
     its('FAIL_DELAY') { should cmp >= '4' }
   end

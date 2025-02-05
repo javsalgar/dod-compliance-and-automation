@@ -31,6 +31,10 @@ control 'PHTN-50-000222' do
   tag cci: ['CCI-000366']
   tag nist: ['CM-6 b']
 
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
   describe systemd_service('ctrl-alt-del.target') do
     it { should_not be_enabled }
     it { should_not be_running }

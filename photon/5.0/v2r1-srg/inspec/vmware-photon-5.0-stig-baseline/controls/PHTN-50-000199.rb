@@ -25,6 +25,10 @@ control 'PHTN-50-000199' do
   tag cci: ['CCI-003992']
   tag nist: ['CM-14']
 
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
   results = command('find /etc/yum.repos.d/ -type f').stdout
   if !results.empty?
     results.split.each do |repofile|

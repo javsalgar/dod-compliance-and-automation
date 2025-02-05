@@ -34,6 +34,10 @@ control 'PHTN-50-000073' do
   tag cci: ['CCI-001312']
   tag nist: ['SI-11 a']
 
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
   describe directory('/var/log') do
     its('owner') { should cmp 'root' }
     its('group') { should cmp 'root' }

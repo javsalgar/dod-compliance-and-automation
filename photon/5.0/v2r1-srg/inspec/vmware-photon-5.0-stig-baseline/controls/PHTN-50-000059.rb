@@ -37,6 +37,10 @@ control 'PHTN-50-000059' do
   tag cci: ['CCI-000803']
   tag nist: ['IA-7']
 
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
   describe file('/etc/pam.d/system-password') do
     its('content') { should match /^password\s+(required|requisite)\s+pam_unix\.so\s+(?=.*\bsha512\b).*$/ }
   end

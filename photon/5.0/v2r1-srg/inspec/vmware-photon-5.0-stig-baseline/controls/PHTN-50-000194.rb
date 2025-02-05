@@ -33,6 +33,10 @@ control 'PHTN-50-000194' do
   tag cci: ['CCI-000044']
   tag nist: ['AC-7 a']
 
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
   if input('useFaillockConf')
     describe parse_config_file('/etc/security/faillock.conf') do
       its('audit') { should_not be nil }

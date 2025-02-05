@@ -37,6 +37,10 @@ control 'PHTN-50-000035' do
   tag cci: ['CCI-004066']
   tag nist: ['IA-5 (1) (h)']
 
+  only_if('Target is a minimal container. This control is not applicable', impact: 0.0) {
+    !input('isMinimalContainer')
+  }
+
   if input('usePwqualityConf')
     describe parse_config_file('/etc/security/pwquality.conf') do
       its('ucredit') { should cmp < 0 }
